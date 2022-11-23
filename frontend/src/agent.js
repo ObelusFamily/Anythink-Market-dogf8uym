@@ -1,5 +1,5 @@
-import superagentPromise from "superagent-promise";
 import _superagent from "superagent";
+import superagentPromise from "superagent-promise";
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
@@ -9,7 +9,6 @@ const BACKEND_URL =
     : "https://api.anythink.market";
 
 const API_ROOT = `${BACKEND_URL}/api`;
-
 const encode = encodeURIComponent;
 const responseBody = (res) => res.body;
 
@@ -52,8 +51,13 @@ const Tags = {
 
 const limit = (count, p) => `limit=${count}&offset=${p ? p * count : 0}`;
 const omitSlug = (item) => Object.assign({}, item, { slug: undefined });
+const getTitleParams = (title) => {
+  if (title) {
+    return `&title=${title}`
+  }
+}
 const Items = {
-  all: (page) => requests.get(`/items?${limit(1000, page)}`),
+  all: (title = null, page) => requests.get(`/items?${limit(1000, page)}${getTitleParams(title)}`),
   bySeller: (seller, page) =>
     requests.get(`/items?seller=${encode(seller)}&${limit(500, page)}`),
   byTag: (tag, page) =>
