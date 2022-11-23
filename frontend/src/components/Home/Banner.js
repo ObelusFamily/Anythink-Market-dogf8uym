@@ -4,12 +4,13 @@ import agent from "../../agent";
 import { connect } from "react-redux";
 import logo from "../../imgs/logo.png";
 
-const mapDispatchToProps = dispatch => ({
-  onTabClick: (tab, pager, payload) => dispatch({ type: CHANGE_TAB, tab, pager, payload }),
+const mapDispatchToProps = (dispatch) => ({
+  onTabClick: (tab, pager, payload) =>
+    dispatch({ type: CHANGE_TAB, tab, pager, payload }),
 });
 
-const Banner = props => {
-  const handleChange = e => {
+const Banner = (props) => {
+  const handleChange = (e) => {
     e.preventDefault();
     if (e.target.value.length > 2) {
       props.onTabClick("all", agent.Items.all, agent.Items.all(e.target.value));
