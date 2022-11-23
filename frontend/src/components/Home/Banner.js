@@ -4,12 +4,6 @@ import agent from "../../agent";
 import { connect } from "react-redux";
 import logo from "../../imgs/logo.png";
 
-const mapStateToProps = (state) => ({
-  ...state.itemList,
-  tags: state.home.tags,
-  token: state.common.token,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   onTabClick: (tab, pager, payload) =>
     dispatch({ type: CHANGE_TAB, tab, pager, payload }),
@@ -37,4 +31,4 @@ const Banner = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Banner);
+export default connect(null, mapDispatchToProps)(Banner);
