@@ -10,39 +10,29 @@ const BACKEND_URL =
 
 const API_ROOT = `${BACKEND_URL}/api`;
 const encode = encodeURIComponent;
-const responseBody = (res) => res.body;
+const responseBody = res => res.body;
 
 let token = null;
-const tokenPlugin = (req) => {
+const tokenPlugin = req => {
   if (token) {
     req.set("authorization", `Token ${token}`);
   }
 };
 
 const requests = {
-  del: (url) =>
-    superagent.del(`${API_ROOT}${url}`).use(tokenPlugin).then(responseBody),
-  get: (url) =>
-    superagent.get(`${API_ROOT}${url}`).use(tokenPlugin).then(responseBody),
-  put: (url, body) =>
-    superagent
-      .put(`${API_ROOT}${url}`, body)
-      .use(tokenPlugin)
-      .then(responseBody),
+  del: url => superagent.del(`${API_ROOT}${url}`).use(tokenPlugin).then(responseBody),
+  get: url => superagent.get(`${API_ROOT}${url}`).use(tokenPlugin).then(responseBody),
+  put: (url, body) => superagent.put(`${API_ROOT}${url}`, body).use(tokenPlugin).then(responseBody),
   post: (url, body) =>
-    superagent
-      .post(`${API_ROOT}${url}`, body)
-      .use(tokenPlugin)
-      .then(responseBody),
+    superagent.post(`${API_ROOT}${url}`, body).use(tokenPlugin).then(responseBody),
 };
 
 const Auth = {
   current: () => requests.get("/user"),
-  login: (email, password) =>
-    requests.post("/users/login", { user: { email, password } }),
+  login: (email, password) => requests.post("/users/login", { user: { email, password } }),
   register: (username, email, password) =>
     requests.post("/users", { user: { username, email, password } }),
-  save: (user) => requests.put("/user", { user }),
+  save: user => requests.put("/user", { user }),
 };
 
 const Tags = {
@@ -50,42 +40,38 @@ const Tags = {
 };
 
 const limit = (count, p) => `limit=${count}&offset=${p ? p * count : 0}`;
-const omitSlug = (item) => Object.assign({}, item, { slug: undefined });
-const getTitleParams = (title) => {
+
+const omitSlug = item => Object.assign({}, item, { slug: undefined });
+const getTitleParams = title => {
   if (title) {
-    return `&title=${title}`
+    return `&title=${title}`;
   }
-}
+};
 const Items = {
   all: (title = null, page) => requests.get(`/items?${limit(1000, page)}${getTitleParams(title)}`),
-  bySeller: (seller, page) =>
-    requests.get(`/items?seller=${encode(seller)}&${limit(500, page)}`),
-  byTag: (tag, page) =>
-    requests.get(`/items?tag=${encode(tag)}&${limit(1000, page)}`),
-  del: (slug) => requests.del(`/items/${slug}`),
-  favorite: (slug) => requests.post(`/items/${slug}/favorite`),
+  bySeller: (seller, page) => requests.get(`/items?seller=${encode(seller)}&${limit(500, page)}`),
+  byTag: (tag, page) => requests.get(`/items?tag=${encode(tag)}&${limit(1000, page)}`),
+  del: slug => requests.del(`/items/${slug}`),
+  favorite: slug => requests.post(`/items/${slug}/favorite`),
   favoritedBy: (seller, page) =>
     requests.get(`/items?favorited=${encode(seller)}&${limit(500, page)}`),
   feed: () => requests.get("/items/feed?limit=10&offset=0"),
-  get: (slug) => requests.get(`/items/${slug}`),
-  unfavorite: (slug) => requests.del(`/items/${slug}/favorite`),
-  update: (item) =>
-    requests.put(`/items/${item.slug}`, { item: omitSlug(item) }),
-  create: (item) => requests.post("/items", { item }),
+  get: slug => requests.get(`/items/${slug}`),
+  unfavorite: slug => requests.del(`/items/${slug}/favorite`),
+  update: item => requests.put(`/items/${item.slug}`, { item: omitSlug(item) }),
+  create: item => requests.post("/items", { item }),
 };
 
 const Comments = {
-  create: (slug, comment) =>
-    requests.post(`/items/${slug}/comments`, { comment }),
-  delete: (slug, commentId) =>
-    requests.del(`/items/${slug}/comments/${commentId}`),
-  forItem: (slug) => requests.get(`/items/${slug}/comments`),
+  create: (slug, comment) => requests.post(`/items/${slug}/comments`, { comment }),
+  delete: (slug, commentId) => requests.del(`/items/${slug}/comments/${commentId}`),
+  forItem: slug => requests.get(`/items/${slug}/comments`),
 };
 
 const Profile = {
-  follow: (username) => requests.post(`/profiles/${username}/follow`),
-  get: (username) => requests.get(`/profiles/${username}`),
-  unfollow: (username) => requests.del(`/profiles/${username}/follow`),
+  follow: username => requests.post(`/profiles/${username}/follow`),
+  get: username => requests.get(`/profiles/${username}`),
+  unfollow: username => requests.del(`/profiles/${username}/follow`),
 };
 
 const agentObj = {
@@ -94,7 +80,7 @@ const agentObj = {
   Comments,
   Profile,
   Tags,
-  setToken: (_token) => {
+  setToken: _token => {
     token = _token;
   },
 };
