@@ -107,7 +107,7 @@ const MainView = (props) => {
         </ul>
       </div>
 
-      {props.alert.text ? (
+      {props.itemsCount === 0 ? (
         <AlertBanner alertText={props.alert.text} />
       ) : (
         <ItemList
