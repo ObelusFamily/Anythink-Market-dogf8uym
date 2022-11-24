@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 
 import agent from "../../agent";
 import { connect } from "react-redux";
-import logo from "../../imgs/logo.png";
+
+// import logo from "../../imgs/logo.png";
 
 const mapStateToProps = (state) => ({
   ...state.itemList,
@@ -41,11 +42,11 @@ const Banner = (props) => {
   return (
     <div className="banner text-white">
       <div className="container p-4 text-center">
-        <img
+        {/* <img
           src={logo}
           alt="banner"
           style={{ height: "50px", width: "50px" }}
-        />
+        /> */}
         <div>
           <span>A place to </span>
           <input
