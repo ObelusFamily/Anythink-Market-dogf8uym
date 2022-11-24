@@ -58,6 +58,26 @@ const TagFilterTab = (props) => {
   );
 };
 
+const AlertBanner = ({ alertText }) => {
+  return (
+    <div
+      className="d-flex justify-content-center mt-3"
+      style={{ height: "200px" }}
+      id="empty"
+    >
+      <div
+        className="d-flex justify-content-center align-items-center w-75"
+        style={{ height: "200px", background: "#521A71" }}
+      >
+        <span>
+          No items found for{" "}
+          <span className="font-weight-bold">"{alertText}"</span>
+        </span>
+      </div>
+    </div>
+  );
+};
+
 const mapStateToProps = (state) => ({
   ...state.itemList,
   tags: state.home.tags,
@@ -88,20 +108,7 @@ const MainView = (props) => {
       </div>
 
       {props.alert.text ? (
-        <div
-          className="d-flex justify-content-center mt-3"
-          style={{ height: "200px" }}
-        >
-          <div
-            className="d-flex justify-content-center align-items-center w-75"
-            style={{ height: "200px", background: "#521A71" }}
-          >
-            <span>
-              No items found for{" "}
-              <span className="font-weight-bold">"{props.alert.text}"</span>
-            </span>
-          </div>
-        </div>
+        <AlertBanner alertText={props.alert.text} />
       ) : (
         <ItemList
           pager={props.pager}
