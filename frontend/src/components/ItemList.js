@@ -8,7 +8,27 @@ const ItemList = (props) => {
   }
 
   if (props.items.length === 0) {
-    return <div className="py-4 no-items">No items are here... yet.</div>;
+    if (props.alert) {
+      return (
+        <div
+          className="d-flex justify-content-center mt-3"
+          style={{ height: "200px" }}
+          id="empty"
+        >
+          <div
+            className="d-flex justify-content-center align-items-center w-75"
+            style={{ height: "200px", background: "#521A71" }}
+          >
+            <span>
+              No items found for{" "}
+              <span className="font-weight-bold">"{props.alert.text}"</span>
+            </span>
+          </div>
+        </div>
+      );
+    } else {
+      return <div className="py-4 no-items">No items are here... yet.</div>;
+    }
   }
 
   return (
