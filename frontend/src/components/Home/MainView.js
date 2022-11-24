@@ -1,8 +1,8 @@
+import { CHANGE_TAB } from "../../constants/actionTypes";
 import ItemList from "../ItemList";
 import React from "react";
 import agent from "../../agent";
 import { connect } from "react-redux";
-import { CHANGE_TAB } from "../../constants/actionTypes";
 
 const YourFeedTab = (props) => {
   if (props.token) {
@@ -62,6 +62,7 @@ const mapStateToProps = (state) => ({
   ...state.itemList,
   tags: state.home.tags,
   token: state.common.token,
+  alert: state.alert,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -86,13 +87,30 @@ const MainView = (props) => {
         </ul>
       </div>
 
-      <ItemList
-        pager={props.pager}
-        items={props.items}
-        loading={props.loading}
-        itemsCount={props.itemsCount}
-        currentPage={props.currentPage}
-      />
+      {props.alert.text ? (
+        <div
+          className="d-flex justify-content-center mt-3"
+          style={{ height: "200px" }}
+        >
+          <div
+            className="d-flex justify-content-center align-items-center w-75"
+            style={{ height: "200px", background: "#521A71" }}
+          >
+            <span>
+              No items found for{" "}
+              <span className="font-weight-bold">"{props.alert.text}"</span>
+            </span>
+          </div>
+        </div>
+      ) : (
+        <ItemList
+          pager={props.pager}
+          items={props.items}
+          loading={props.loading}
+          itemsCount={props.itemsCount}
+          currentPage={props.currentPage}
+        />
+      )}
     </div>
   );
 };

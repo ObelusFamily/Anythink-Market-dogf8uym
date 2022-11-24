@@ -1,21 +1,43 @@
-import { CHANGE_TAB } from "../../constants/actionTypes";
-import React from "react";
+import { ADD_ALERT, CHANGE_TAB } from "../../constants/actionTypes";
+import React, { useEffect, useState } from "react";
+
 import agent from "../../agent";
 import { connect } from "react-redux";
 import logo from "../../imgs/logo.png";
 
+const mapStateToProps = (state) => ({
+  ...state.itemList,
+  alert: state.alert,
+});
+
 const mapDispatchToProps = (dispatch) => ({
-  onTabClick: (tab, pager, payload) =>
+  onSearch: (tab, pager, payload) =>
     dispatch({ type: CHANGE_TAB, tab, pager, payload }),
+  onNoResults: (title) => {
+    dispatch({ type: ADD_ALERT, payload: title });
+  },
 });
 
 const Banner = (props) => {
+  const [searchText, setSearchText] = useState("");
   const handleChange = (e) => {
     e.preventDefault();
+    setSearchText(e.target.value);
     if (e.target.value.length > 2) {
-      props.onTabClick("all", agent.Items.all, agent.Items.all(e.target.value));
+      props.onSearch("all", agent.Items.all, agent.Items.all(e.target.value));
+    } else {
+      props.onSearch("all", agent.Items.all, agent.Items.all());
     }
   };
+
+  useEffect(() => {
+    if (props.itemsCount === 0) {
+      props.onNoResults(searchText);
+    } else {
+      props.onNoResults("");
+    }
+  }, [props.itemsCount]);
+
   return (
     <div className="banner text-white">
       <div className="container p-4 text-center">
@@ -24,6 +46,7 @@ const Banner = (props) => {
           <span>A place to </span>
           <input
             onChange={handleChange}
+            value={searchText}
             className="rounded w-50 border-0 px-3 mx-3"
             id="search-box"
             placeholder="What is that you truly desire"
@@ -36,4 +59,4 @@ const Banner = (props) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(Banner);
+export default connect(mapStateToProps, mapDispatchToProps)(Banner);
