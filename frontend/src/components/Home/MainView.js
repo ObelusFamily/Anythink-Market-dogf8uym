@@ -58,26 +58,6 @@ const TagFilterTab = (props) => {
   );
 };
 
-const NoItemsFound = ({ alertText }) => {
-  return (
-    <div
-      className="d-flex justify-content-center mt-3"
-      style={{ height: "200px" }}
-      id="empty"
-    >
-      <div
-        className="d-flex justify-content-center align-items-center w-75"
-        style={{ height: "200px", background: "#521A71" }}
-      >
-        <span>
-          No items found for{" "}
-          <span className="font-weight-bold">"{alertText}"</span>
-        </span>
-      </div>
-    </div>
-  );
-};
-
 const mapStateToProps = (state) => ({
   ...state.itemList,
   tags: state.home.tags,
@@ -107,17 +87,14 @@ const MainView = (props) => {
         </ul>
       </div>
 
-      {props.items?.length === 0 ? (
-        <NoItemsFound alertText={props.alert.text} />
-      ) : (
-        <ItemList
-          pager={props.pager}
-          items={props.items}
-          loading={props.loading}
-          itemsCount={props.itemsCount}
-          currentPage={props.currentPage}
-        />
-      )}
+      <ItemList
+        pager={props.pager}
+        items={props.items}
+        loading={props.loading}
+        itemsCount={props.itemsCount}
+        currentPage={props.currentPage}
+        alert={props.alert}
+      />
     </div>
   );
 };
