@@ -37,7 +37,7 @@ const Banner = (props) => {
     } else {
       props.onNoResults("");
     }
-  }, [props.itemsCount]);
+  }, [props, searchText]);
 
   return (
     <div className="banner text-white">
