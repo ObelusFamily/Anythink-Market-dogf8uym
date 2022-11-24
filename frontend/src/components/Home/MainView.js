@@ -58,7 +58,7 @@ const TagFilterTab = (props) => {
   );
 };
 
-const AlertBanner = ({ alertText }) => {
+const NoItemsFound = ({ alertText }) => {
   return (
     <div
       className="d-flex justify-content-center mt-3"
@@ -107,8 +107,8 @@ const MainView = (props) => {
         </ul>
       </div>
 
-      {props.itemsCount === 0 ? (
-        <AlertBanner alertText={props.alert.text} />
+      {props.items.length === 0 ? (
+        <NoItemsFound alertText={props.alert.text} />
       ) : (
         <ItemList
           pager={props.pager}
