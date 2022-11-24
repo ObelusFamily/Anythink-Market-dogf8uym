@@ -19,25 +19,25 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const Banner = (props) => {
+const Banner = ({ onSearch, onNoResults, itemsCount }) => {
   const [searchText, setSearchText] = useState("");
   const handleChange = (e) => {
     e.preventDefault();
     setSearchText(e.target.value);
     if (e.target.value.length > 2) {
-      props.onSearch("all", agent.Items.all, agent.Items.all(e.target.value));
+      onSearch("all", agent.Items.all, agent.Items.all(e.target.value));
     } else {
-      props.onSearch("all", agent.Items.all, agent.Items.all());
+      onSearch("all", agent.Items.all, agent.Items.all());
     }
   };
 
   useEffect(() => {
-    if (props.itemsCount === 0) {
-      props.onNoResults(searchText);
+    if (itemsCount === 0) {
+      onNoResults(searchText);
     } else {
-      props.onNoResults("");
+      onNoResults("");
     }
-  }, [props, searchText]);
+  }, [itemsCount, searchText, onNoResults]);
 
   return (
     <div className="banner text-white">

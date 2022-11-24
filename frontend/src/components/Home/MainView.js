@@ -107,7 +107,7 @@ const MainView = (props) => {
         </ul>
       </div>
 
-      {props.items.length === 0 ? (
+      {props.items?.length === 0 ? (
         <NoItemsFound alertText={props.alert.text} />
       ) : (
         <ItemList
